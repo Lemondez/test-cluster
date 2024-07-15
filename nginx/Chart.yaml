@@ -1,0 +1,12 @@
+apiVersion: v2
+name: nginx
+description: Web based PostgreSQL administration
+type: application
+
+version: 18.1.4 #helm库版本号
+appVersion: "1.27.0" #helm库中的nginx版本号
+
+dependencies: #依赖artifacthub.io上的helm库
+- name: nginx
+  version: 18.1.4 #helm库版本号
+  repository: https://charts.bitnami.com/bitnami

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: #元数据
+  name: nginx
+  namespace: argo-cd
+spec:
+  project: test-cluster
+  source:
+    repoURL: http://10.80.1.112:8000/trinity/test-cluster.git
+    targetRevision: main #gielab中的目标版本，就是branch
+    path: nginx #路径
+    helm:
+      valueFiles:
+      - values.yaml #nginx/values
+  destination: #目标
+    name: test-cluster #目标集群，argocd中的集群名称
+    namespace: nginxdemo #目标ns，集群中的ns
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+    - CreateNamespace=true
