@@ -3,10 +3,10 @@ name: pgadmin4
 description: Web based PostgreSQL administration
 type: application
 
-version: 1.24.1 #helm库版本号
-appVersion: "8.5" #helm库中的pgadmin版本号
+version: 1.27.0 #helm库版本号
+appVersion: "8.9" #helm库中的pgadmin版本号
 
 dependencies: #依赖artifacthub.io上的helm库
 - name: pgadmin4
-  version: 1.24.1 #
+  version: 1.27.0 #
   repository: https://helm.runix.net
