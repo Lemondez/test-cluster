@@ -1,17 +1,12 @@
-apiVersion: v1
-appVersion: "8.9"
-description: pgAdmin4 is a web based administration tool for PostgreSQL database
-home: https://www.pgadmin.org/
-icon: https://wiki.postgresql.org/images/3/30/PostgreSQL_logo.3colors.120x120.png
-keywords:
-- pgadmin
-- postgres
-- database
-- sql
-maintainers:
-- email: rowanruseler@gmail.com
-  name: rowanruseler
+apiVersion: v2
 name: pgadmin4
-sources:
-- https://github.com/rowanruseler/helm-charts
-version: 1.27.0
+description: Web based PostgreSQL administration
+type: application
+
+version: 1.24.1 #helm库版本号
+appVersion: "8.5" #helm库中的pgadmin版本号
+
+dependencies: #依赖artifacthub.io上的helm库
+- name: pgadmin4
+  version: 1.24.1 #
+  repository: https://helm.runix.net
