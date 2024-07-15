@@ -1,0 +1,55 @@
+pgadmin4:
+  extraDeploy:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: pgadmin4-config-local
+        namespace: database
+      type: Opaque
+      stringData:
+        config: |
+          AUTHENTICATION_SOURCES = ['ldap', 'internal']
+          LDAP_AUTO_CREATE_USER = True
+          LDAP_CONNECTION_TIMEOUT = 10
+          LDAP_SERVER_URI = 'ldaps://sso.trinityconsultants.cn'
+          LDAP_USERNAME_ATTRIBUTE = 'cn'
+          LDAP_BIND_USER = 'cn=svc-ldap-postgresql,ou=users,ou=postgresql,dc=trinityconsultants,dc=cn'
+          LDAP_BIND_PASSWORD = 'oGVwyUoE2MbAamykfpp2YVx2nyKHqZJ4'
+          LDAP_SEARCH_BASE_DN = 'ou=postgresql,dc=trinityconsultants,dc=cn'
+          LDAP_SEARCH_FILTER = '(objectClass=user)'
+          MASTER_PASSWORD_REQUIRED = False
+
+  env:
+    email: admin@trinityconsultants.cn
+    password: cPZnWPGRni8rjrU6Rh7eIZC8uIUd2xfsoktHKgjEwN0OvfcOvV3rN6bAes4hUPzM
+
+  extraSecretMounts:
+    - name: config-mount
+      secret: pgadmin4-config-local
+      subPath: config
+      mountPath: "/pgadmin4/config_local.py"
+      readOnly: true
+
+  persistentVolume:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    storageClass: "pve-ceph-cephfs"
+
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      cert-manager.io/cluster-issuer: acme-letsencrypt
+    ingressClassName: traefik
+    hosts:
+      - host: pgadmin.trinityconsultants.cn
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: pgadmin4-tls
+        hosts:
+          - pgadmin.trinityconsultants.cn
